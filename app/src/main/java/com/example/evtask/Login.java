@@ -17,51 +17,44 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Login extends AppCompatActivity {
-    EditText lphno,lpassword;
+    EditText lphno, lpassword;
     Button lbutton;
     SharedPreferences sharedPreferences;
 
 
-
     @Override
-    protected void onCreate( Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        sharedPreferences=getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
 
-        lphno=findViewById(R.id.lphNo);
-        lpassword=findViewById(R.id.lPassword);
-        lbutton=findViewById(R.id.buttonlogin);
+        lphno = findViewById(R.id.lphNo);
+        lpassword = findViewById(R.id.lPassword);
+        lbutton = findViewById(R.id.buttonlogin);
 
         lbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phoneNo=lphno.getText().toString();
-                String password=lpassword.getText().toString();
-                String sharedPhone=sharedPreferences.getString("phoneKey","");
-                String sharedPassword=sharedPreferences.getString("passWordKey","");
+                String phoneNo = lphno.getText().toString();
+                String password = lpassword.getText().toString();
+                String sharedPhone = sharedPreferences.getString("Phone", "");
+                String sharedPassword = sharedPreferences.getString("Password", "");
 
 
-
-              if(TextUtils.isEmpty(phoneNo))
-                {
+                if (TextUtils.isEmpty(phoneNo)) {
                     lphno.setError("phone number is required to login");
-                }
-                else if(TextUtils.isEmpty(password))
-                {
+                } else if (TextUtils.isEmpty(password)) {
                     lpassword.setError("password is required to login");
-                }else if (phoneNo.equals(sharedPhone)&&  password.equals(sharedPassword))
-                    {
-                        Toast.makeText(Login.this, "welcome", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                } else if (phoneNo.equals(sharedPhone) && password.equals(sharedPassword)) {
+                    Toast.makeText(Login.this, "welcome", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Login.this, MainActivity.class);
 
                     startActivity(intent);
-                    }
-                    else{
-                        Toast.makeText(Login.this, "invalid credentials", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(Login.this, "invalid credentials", Toast.LENGTH_SHORT).show();
 
-                    }
+                }
             }
 
         });

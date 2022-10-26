@@ -16,44 +16,44 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Objects;
 
 public class Register extends AppCompatActivity {
-    EditText rname, remail, rmobileNo, rpassword, rconfirmPassword;
+    EditText rName, rEmail, rMobileNo, rPassword, rConfirmPassword;
     Button register;
- SharedPreferences sharedPreferences;
- String newUser,newMail,newPassword,newPhNo,newCnFrmPass;
-    public static final String MyPREFERENCES = "myPreferences";
+    SharedPreferences sharedPreferences;
+    String newUser, newMail, newPassword, newPhNo, newCnFrmPass;
+    public static final String MyPREFERENCES = "MyPreferences";
 
-    public static final String Name = "name";
-    public static final String email = "mail";
-    public static final String phone = "phone";
-    public static final String Password = "passWord";
-    public static final String ConfirmPassword = "confirmPassword";
+    public static final String Name = "Name";
+    public static final String email = "Email";
+    public static final String phone = "Phone";
+    public static final String Password = "PassWord";
+    public static final String ConfirmPassword = "ConfirmPassword";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        rname = findViewById(R.id.Rname);
-        remail = findViewById(R.id.Remail);
-        rmobileNo = findViewById(R.id.RphNo);
-        rpassword = findViewById(R.id.RPassWord);
-        rconfirmPassword = findViewById(R.id.RConfirmPassword);
+        rName = findViewById(R.id.Rname);
+        rEmail = findViewById(R.id.Remail);
+        rMobileNo = findViewById(R.id.RphNo);
+        rPassword = findViewById(R.id.RPassWord);
+        rConfirmPassword = findViewById(R.id.RConfirmPassword);
         register = findViewById(R.id.Rbutton);
 
-     sharedPreferences=getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-SharedPreferences.Editor editor=sharedPreferences.edit();
-     if (!sharedPreferences.getString("confirmPassword","").isEmpty()){
-         startActivity(new Intent(this,MainActivity.class));
-     }
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if (!sharedPreferences.getString("confirmPassword", "").isEmpty()) {
+            startActivity(new Intent(this, MainActivity.class));
+        }
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newUser = Objects.requireNonNull(rname.getText()).toString();
-                newMail = Objects.requireNonNull(remail.getText()).toString();
-                newPassword = Objects.requireNonNull(rpassword.getText()).toString();
-                newCnFrmPass = Objects.requireNonNull(rconfirmPassword.getText()).toString();
-                newPhNo = Objects.requireNonNull(rmobileNo.getText()).toString();
+                newUser = Objects.requireNonNull(rName.getText()).toString();
+                newMail = Objects.requireNonNull(rEmail.getText()).toString();
+                newPassword = Objects.requireNonNull(rPassword.getText()).toString();
+                newCnFrmPass = Objects.requireNonNull(rConfirmPassword.getText()).toString();
+                newPhNo = Objects.requireNonNull(rMobileNo.getText()).toString();
 
                 checkDataEntered();
                 editor.putString(Name, newUser);
@@ -62,7 +62,7 @@ SharedPreferences.Editor editor=sharedPreferences.edit();
                 editor.putString(Password, newPassword);
                 editor.putString(ConfirmPassword, newCnFrmPass);
                 editor.putString(phone, newPhNo);
-                final boolean commit=  editor.commit();
+                final boolean commit = editor.commit();
             }
         });
     }
@@ -71,44 +71,33 @@ SharedPreferences.Editor editor=sharedPreferences.edit();
         CharSequence str = text.getText().toString();
         return TextUtils.isEmpty(str);
     }
+
     boolean isEmail(EditText text) {
         CharSequence email = text.getText().toString();
         return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
     }
-             void checkDataEntered() {
-        if (isEmpty(rname)) {
-                    rname.setError("Name is required");
-                return;
-              }
 
-               else if (!isEmail(remail)) {
-                  remail.setError("Enter valid email!");
-                }
+    void checkDataEntered() {
+        if (isEmpty(rName)) {
+            rName.setError("Name is required");
+        } else if (!isEmail(rEmail)) {
+            rEmail.setError("Enter valid email!");
+        } else if (isEmpty(rMobileNo)) {
+            rMobileNo.setError("phNo is required");
+        } else if (isEmpty(rPassword)) {
+            rPassword.setError("Password is required");
 
-                else if(isEmpty(rmobileNo)){
-                    rmobileNo.setError("phNo is required");
-               return;
-                }
+        } else if (isEmpty(rConfirmPassword)) {
+            rConfirmPassword.setError("ConfirmPassword is required");
+        } else if (!rConfirmPassword.getText().toString().equals(rPassword.getText().toString())) {
+            rConfirmPassword.setError(" Password does not matching");
+        } else {
 
-                else if (isEmpty(rpassword)) {
-                    rpassword.setError("Password is required");
-                    return;
-                }
-                else if (isEmpty(rconfirmPassword)) {
-                    rconfirmPassword.setError("ConfirmPassword is required");
-                 return;
-                }    else if (!rconfirmPassword.getText().toString().equals(rpassword.getText().toString())) {
-            rconfirmPassword.setError("Your password does not matching");
-        }else{
+        Toast.makeText(Register.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(Register.this, Login.class);
+        startActivity(intent);
 
-        }
-                 Toast.makeText(Register.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+    }
 
-
-            Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-
-            }
-
-        }
+}}
 
